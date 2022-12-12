@@ -4,7 +4,9 @@
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Hello, World!");
+			// Init
+			// Auf Start Argumente warten
+			// Programm dazu öffnen (Serial Test, Socket Test...)
 		}
 	}
 }
