@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GLaDOS
+namespace Control
 {
 	internal class Utils
 	{
@@ -68,12 +68,13 @@ namespace GLaDOS
 		/// <param name="destination"></param>
 		public static async void DownloadFromURL(string urlPath, string destination)
 		{
-			Log.Information("Download " + ProgramData.PRIMARY_URL + urlPath, "Web");
+			string url = "gaming-pydra.de/Download/Control/";
+			Log.Information("Download " + url + urlPath, "Web");
 			try
 			{
 				using (HttpClient client = new HttpClient())
 				{
-					using (HttpResponseMessage response = await client.GetAsync(ProgramData.PRIMARY_URL + urlPath))
+					using (HttpResponseMessage response = await client.GetAsync(url + urlPath))
 					using (Stream streamToReadFrom = await response.Content.ReadAsStreamAsync())
 					{
 						using (Stream streamToWriteTo = File.Open(destination, FileMode.Create))

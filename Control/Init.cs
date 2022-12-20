@@ -8,7 +8,7 @@ using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 using NLua;
 
-namespace GLaDOS
+namespace Control
 {
 	internal class Init
 	{
@@ -17,8 +17,16 @@ namespace GLaDOS
 		/// </summary>
 		public static void CreateFilesystem()
 		{
-			Utils.CreateDirectory(ProgramData.DIR_ROOT);
-			Utils.CreateDirectory(ProgramData.DIR_VOICES);
+			if (Server.enabled)
+			{
+				Utils.CreateDirectory(Server.DIR_MAIN);
+				Utils.CreateDirectory(Server.DIR_CONFIGS);
+				Utils.CreateDirectory(Server.DIR_LOGS);
+				Utils.CreateDirectory(Server.DIR_CACHE);
+				Utils.CreateDirectory(Server.DIR_USER);
+				Utils.CreateDirectory(Server.DIR_VOICE);
+				Utils.CreateDirectory(Server.DIR_SCRIPTS);
+			}
 		}
 
 		/// <summary>
@@ -26,13 +34,16 @@ namespace GLaDOS
 		/// </summary>
 		public static void SetupLogger()
 		{
-			// log directory
-			if (!System.IO.Directory.Exists(ProgramData.DIR_LOGS))
+			if (Server.enabled)
 			{
-				System.IO.Directory.CreateDirectory(ProgramData.DIR_LOGS);
+				Log.Logger = new LoggerConfiguration().WriteTo.Console(theme: AnsiConsoleTheme.Code).WriteTo.File(Server.DIR_LOGS + "log.txt", rollOnFileSizeLimit: true, rollingInterval: RollingInterval.Day, shared: true).CreateLogger();
+				Log.Information("Hello from Logger");
 			}
-			Log.Logger = new LoggerConfiguration().WriteTo.Console(theme: AnsiConsoleTheme.Code).WriteTo.File(ProgramData.DIR_LOGS + "log.txt", rollOnFileSizeLimit: true, rollingInterval: RollingInterval.Day, shared: true).CreateLogger();
-			Log.Information("Hello from Logger");
+			else if (Client.enabled)
+			{
+				//Log.Logger = new LoggerConfiguration().WriteTo.Console(theme: AnsiConsoleTheme.Code).WriteTo.File(Client.DIR_LOGS + "log.txt", rollOnFileSizeLimit: true, rollingInterval: RollingInterval.Day, shared: true).CreateLogger();
+				Log.Information("Hello from Logger");
+			}
 		}
 
 		/// <summary>

@@ -8,5 +8,6 @@ namespace Control
 {
 	internal class Client
 	{
+		public static bool enabled = false;
 	}
 }

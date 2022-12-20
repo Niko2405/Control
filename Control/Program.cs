@@ -4,17 +4,33 @@
 	{
 		private static void Start()
 		{
-
+			Init.CreateFilesystem();
+			Init.SetupLogger();
+			Init.TestLua();
+			Server.RunTerminal();
 		}
 		static void Main(string[] args)
 		{
 			for (int i = 0; i < args.Length; i++)
 			{
-				Console.WriteLine(args[i]);
+				if (args[i] == "--server")
+				{
+					Server.enabled = true;
+					Client.enabled = false;
+				}
+				if (args[i] == "--client")
+				{
+					Client.enabled = true;
+					Server.enabled = false;
+				}
+				Console.ForegroundColor = ConsoleColor.White;
+				Console.BackgroundColor = ConsoleColor.Black;
 			}
-			// Init
-			// Auf Start Argumente warten
-			// Programm dazu öffnen (Serial Test, Socket Test...)
+			if (!Server.enabled && !Client.enabled)
+			{
+				System.Console.WriteLine("No start arguments found");
+			}
+			Start();
 		}
 	}
 }

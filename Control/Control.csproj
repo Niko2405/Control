@@ -9,6 +9,7 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <Platforms>AnyCPU;x64</Platforms>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Copyright>Niko_2405</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
