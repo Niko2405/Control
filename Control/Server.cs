@@ -16,6 +16,8 @@ namespace Control
 		public const string DIR_VOICE = DIR_MAIN + "voices/";
 		public const string DIR_SCRIPTS = DIR_MAIN + "scripts/";
 
+		public static string COM_Port { get; set; } = "COM4";
+		public static int COM_Baud { get; set; } = 9600;
 		public static bool enabled = false;
 
 		public static void RunTerminal()
@@ -41,8 +43,11 @@ namespace Control
 					Console.ForegroundColor = ConsoleColor.White;
 					Console.Write(">" + output);
 
-					// print userinput
+					// userinput
 					Console.SetCursorPosition(0, y - 1);
+					Console.ForegroundColor = ConsoleColor.Green;
+					Console.Write("User");
+					Console.ForegroundColor = ConsoleColor.White;
 					Console.Write(">");
 					input = Console.ReadLine();
 
@@ -56,7 +61,49 @@ namespace Control
 		}
 		private static string RunCommand(string command)
 		{
-			return command;
+			string[] input_list = command.ToLower().Split(" ");
+
+			for (int a = 0; a < input_list.Length; a++)
+			{
+				if (input_list[a] == "hallo")
+				{
+					return "Hallo root";
+				}
+				else if (input_list[a] == "exit")
+				{
+					System.Environment.Exit(0);
+					return null;
+				}
+				else if (input_list[a] == "start")
+				{
+					for (int b = 0; b < input_list.Length; b++)
+					{
+						if (input_list[b] == "test")
+						{
+							for (int c = 0; c < input_list.Length; c++)
+							{
+								if (input_list[c] == "audio")
+								{
+									return "Starte Audio Test";
+								}
+								else if (input_list[c] == "serial")
+								{
+									Serial.SendData("TEST");
+									if (Serial.ReadData() == "OK")
+									{
+										return "Serial Test ist OK";
+									}
+									else
+									{
+										return "Serial Test nicht in Ordnung";
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			return "Eingabe konnte nicht verarbeitet werden";
 		}
 	}
 }

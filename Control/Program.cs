@@ -7,6 +7,7 @@
 			Init.CreateFilesystem();
 			Init.SetupLogger();
 			Init.TestLua();
+			Thread.Sleep(2500);
 			Server.RunTerminal();
 		}
 		static void Main(string[] args)
