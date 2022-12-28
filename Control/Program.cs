@@ -7,7 +7,8 @@
 			Init.CreateFilesystem();
 			Init.SetupLogger();
 			Init.TestLua();
-			Thread.Sleep(2500);
+			Init.ShowInformation();
+			Thread.Sleep(5000);
 			Server.RunTerminal();
 		}
 		static void Main(string[] args)
@@ -30,6 +31,7 @@
 			if (!Server.enabled && !Client.enabled)
 			{
 				System.Console.WriteLine("No start arguments found");
+				System.Environment.Exit(1);
 			}
 			Start();
 		}

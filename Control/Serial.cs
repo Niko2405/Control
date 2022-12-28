@@ -10,42 +10,36 @@ namespace Control
 {
 	internal class Serial
 	{
-		public static void SendData(string data)
+		/// <summary>
+		/// Send command to master module (arduino etc.) recv. message from module
+		/// </summary>
+		/// <param name="command"></param>
+		/// <returns>Feedback</returns>
+		public static string SendCommand(string command)
 		{
-			SerialPort serialPort = new SerialPort(Server.COM_Port, Server.COM_Baud, Parity.None, 8, StopBits.One);
-			try
-			{
-				Log.Information("Send data (" + data + ") to COM: " + Server.COM_Port);
-				serialPort.Open();
-				serialPort.WriteLine(data);
-			}
-			catch (Exception ex)
-			{
-				Log.Error(ex.ToString());
-				Thread.Sleep(7500);
-			}
-			serialPort.Close();
-		}
+			string send = command;
+			string recv = "NONE";
 
-		public static string ReadData()
-		{
-			string data;
 			SerialPort serialPort = new SerialPort(Server.COM_Port, Server.COM_Baud, Parity.None, 8, StopBits.One);
+			serialPort.WriteTimeout = 250;
+			serialPort.ReadTimeout = 250;
+
 			try
 			{
-				Log.Information("Read data from COM: " + Server.COM_Port);
 				serialPort.Open();
-				serialPort.ReadTimeout = 5000;
-				data = serialPort.ReadLine();
-				serialPort.Close();
-				return data.Trim();
+				serialPort.Write(send);
+				recv = serialPort.ReadLine().Replace("\n", "").Replace("\r", "");
 			}
-			catch (Exception ex)
+			catch (IOException)
 			{
-				Log.Error(ex.ToString());
-				Thread.Sleep(7500);
-				return "ERR";
+				Log.Error("Zeitüberschreitung am " + Server.COM_Port);
+				Thread.Sleep(5000);
 			}
+			if (serialPort.IsOpen)
+			{
+				serialPort.Close();
+			}
+			return recv;
 		}
 	}
 }

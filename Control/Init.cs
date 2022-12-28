@@ -66,5 +66,11 @@ namespace Control
 			Thread.Sleep(2000);
 			Log.Information("Lua test OK");
 		}
+
+		public static void ShowInformation()
+		{
+			Console.WriteLine("VERSION:\t0.02");
+			Console.WriteLine("Entwickler:\tNiko2405");
+		}
 	}
 }

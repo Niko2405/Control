@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Control
 {
@@ -16,7 +17,7 @@ namespace Control
 		public const string DIR_VOICE = DIR_MAIN + "voices/";
 		public const string DIR_SCRIPTS = DIR_MAIN + "scripts/";
 
-		public static string COM_Port { get; set; } = "COM4";
+		public static string COM_Port { get; set; } = "com1";
 		public static int COM_Baud { get; set; } = 9600;
 		public static bool enabled = false;
 
@@ -88,15 +89,44 @@ namespace Control
 								}
 								else if (input_list[c] == "serial")
 								{
-									Serial.SendData("TEST");
-									if (Serial.ReadData() == "OK")
+									string recv = Serial.SendCommand("TEST");
+									if (recv.Equals("OK"))
 									{
 										return "Serial Test ist OK";
 									}
-									else
+									else if (!recv.Equals("OK"))
 									{
 										return "Serial Test nicht in Ordnung";
 									}
+								}
+							}
+						}
+					}
+				}
+				else if (input_list[a] == "set")
+				{
+					for (int b = 0; b < input_list.Length; b++)
+					{
+						if (input_list[b] == "com_port")
+						{
+							if (input_list.Length >= 3)
+							{
+								Server.COM_Port= input_list[2];
+								return "set variable Server.COM_Port = " + input_list[2];
+							}
+						}
+						else if (input_list[b] == "com_baud")
+						{
+							if (input_list.Length >= 3)
+							{
+								try
+								{
+									Server.COM_Baud = int.Parse(input_list[2]);
+									return "set variable Server.COM_Baud = " + input_list[2];
+								}
+								catch (Exception)
+								{
+									return "parameter error";
 								}
 							}
 						}
