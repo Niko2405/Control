@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <StartupObject>Control.Program</StartupObject>
     <ApplicationIcon>icon.ico</ApplicationIcon>
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platforms>AnyCPU;x64;ARM64</Platforms>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Copyright>Niko_2405</Copyright>
   </PropertyGroup>

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using System.Net.NetworkInformation;
 
 namespace Control
 {
-	internal class Server
+	internal class Control
 	{
 		public const string DIR_MAIN = "data/";
 		public const string DIR_LOGS = DIR_MAIN + "logs/";
@@ -19,44 +14,40 @@ namespace Control
 
 		public static string COM_Port { get; set; } = "com1";
 		public static int COM_Baud { get; set; } = 9600;
-		public static bool enabled = false;
 
 		public static void RunTerminal()
 		{
-			if (enabled)
+			string output = "";
+			string? input;
+			int x;
+			int y;
+
+			while (true)
 			{
-				string output = "";
-				string? input;
-				int x;
-				int y;
+				// get current terminal size
+				x = Utils.GetTerminalSize().Item1;
+				y = Utils.GetTerminalSize().Item2;
 
-				while (true)
+				// print meesage from system
+				Console.Clear();
+				Console.SetCursorPosition(0, 0);
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.Write("Control");
+				Console.ForegroundColor = ConsoleColor.White;
+				Console.Write(">" + output);
+
+				// userinput
+				Console.SetCursorPosition(0, y - 1);
+				Console.ForegroundColor = ConsoleColor.Green;
+				Console.Write("User");
+				Console.ForegroundColor = ConsoleColor.White;
+				Console.Write(">");
+				input = Console.ReadLine();
+
+				// if input correct
+				if (input != null)
 				{
-					// get current terminal size
-					x = Utils.GetTerminalSize().Item1;
-					y = Utils.GetTerminalSize().Item2;
-
-					// print meesage from system
-					Console.Clear();
-					Console.SetCursorPosition(0, 0);
-					Console.ForegroundColor = ConsoleColor.Red;
-					Console.Write("Control");
-					Console.ForegroundColor = ConsoleColor.White;
-					Console.Write(">" + output);
-
-					// userinput
-					Console.SetCursorPosition(0, y - 1);
-					Console.ForegroundColor = ConsoleColor.Green;
-					Console.Write("User");
-					Console.ForegroundColor = ConsoleColor.White;
-					Console.Write(">");
-					input = Console.ReadLine();
-
-					// if input correct
-					if (input != null)
-					{
-						output = RunCommand(input);
-					}
+					output = RunCommand(input);
 				}
 			}
 		}
@@ -111,7 +102,7 @@ namespace Control
 						{
 							if (input_list.Length >= 3)
 							{
-								Server.COM_Port= input_list[2];
+								Control.COM_Port = input_list[2];
 								return "set variable Server.COM_Port = " + input_list[2];
 							}
 						}
@@ -121,13 +112,31 @@ namespace Control
 							{
 								try
 								{
-									Server.COM_Baud = int.Parse(input_list[2]);
+									Control.COM_Baud = int.Parse(input_list[2]);
 									return "set variable Server.COM_Baud = " + input_list[2];
 								}
 								catch (Exception)
 								{
 									return "parameter error";
 								}
+							}
+						}
+					}
+				}
+				// mm = MasterModule
+				else if (input_list[a] == "mm" || input_list[a] == "mastermodule")
+				{
+					for (int b = 0; b < input_list.Length; b++)
+					{
+						if (input_list[b] == "send")
+						{
+							if (input_list.Length >= 3)
+							{
+								// removes "mm" and "send", also two whitespaces
+								string MasterModuleCommand = command.Replace("mm", "").Replace("send", "").Remove(0, 2);
+								string recv = Serial.SendCommand(MasterModuleCommand);
+								return recv;
+								//return MasterModuleCommand + " len: (" + MasterModuleCommand.Length + ")";
 							}
 						}
 					}

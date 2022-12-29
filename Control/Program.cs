@@ -9,30 +9,14 @@
 			Init.TestLua();
 			Init.ShowInformation();
 			Thread.Sleep(5000);
-			Server.RunTerminal();
+			Control.RunTerminal();
 		}
 		static void Main(string[] args)
 		{
-			for (int i = 0; i < args.Length; i++)
-			{
-				if (args[i] == "--server")
-				{
-					Server.enabled = true;
-					Client.enabled = false;
-				}
-				if (args[i] == "--client")
-				{
-					Client.enabled = true;
-					Server.enabled = false;
-				}
-				Console.ForegroundColor = ConsoleColor.White;
-				Console.BackgroundColor = ConsoleColor.Black;
-			}
-			if (!Server.enabled && !Client.enabled)
-			{
-				System.Console.WriteLine("No start arguments found");
-				System.Environment.Exit(1);
-			}
+			// set console color
+			Console.ForegroundColor = ConsoleColor.White;
+			Console.BackgroundColor = ConsoleColor.Black;
+
 			Start();
 		}
 	}

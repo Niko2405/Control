@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using NLua;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
-using NLua;
 
 namespace Control
 {
@@ -17,16 +11,13 @@ namespace Control
 		/// </summary>
 		public static void CreateFilesystem()
 		{
-			if (Server.enabled)
-			{
-				Utils.CreateDirectory(Server.DIR_MAIN);
-				Utils.CreateDirectory(Server.DIR_CONFIGS);
-				Utils.CreateDirectory(Server.DIR_LOGS);
-				Utils.CreateDirectory(Server.DIR_CACHE);
-				Utils.CreateDirectory(Server.DIR_USER);
-				Utils.CreateDirectory(Server.DIR_VOICE);
-				Utils.CreateDirectory(Server.DIR_SCRIPTS);
-			}
+			Utils.CreateDirectory(Control.DIR_MAIN);
+			Utils.CreateDirectory(Control.DIR_CONFIGS);
+			Utils.CreateDirectory(Control.DIR_LOGS);
+			Utils.CreateDirectory(Control.DIR_CACHE);
+			Utils.CreateDirectory(Control.DIR_USER);
+			Utils.CreateDirectory(Control.DIR_VOICE);
+			Utils.CreateDirectory(Control.DIR_SCRIPTS);
 		}
 
 		/// <summary>
@@ -34,16 +25,9 @@ namespace Control
 		/// </summary>
 		public static void SetupLogger()
 		{
-			if (Server.enabled)
-			{
-				Log.Logger = new LoggerConfiguration().WriteTo.Console(theme: AnsiConsoleTheme.Code).WriteTo.File(Server.DIR_LOGS + "log.txt", rollOnFileSizeLimit: true, rollingInterval: RollingInterval.Day, shared: true).CreateLogger();
-				Log.Information("Hello from Logger");
-			}
-			else if (Client.enabled)
-			{
-				//Log.Logger = new LoggerConfiguration().WriteTo.Console(theme: AnsiConsoleTheme.Code).WriteTo.File(Client.DIR_LOGS + "log.txt", rollOnFileSizeLimit: true, rollingInterval: RollingInterval.Day, shared: true).CreateLogger();
-				Log.Information("Hello from Logger");
-			}
+			Log.Logger = new LoggerConfiguration().WriteTo.Console(theme: AnsiConsoleTheme.Code).WriteTo.File(Control.DIR_LOGS + "log.txt", rollOnFileSizeLimit: true, rollingInterval: RollingInterval.Day, shared: true).CreateLogger();
+			Log.Information("Logger created");
+
 		}
 
 		/// <summary>
@@ -62,14 +46,14 @@ namespace Control
 				Log.Information($"Value = {x}");
 			}
 			Thread.Sleep(2000);
-			lua.DoString("print('Hello from Lua')");
+			lua.DoString("print('Lua is ready')");
 			Thread.Sleep(2000);
 			Log.Information("Lua test OK");
 		}
 
 		public static void ShowInformation()
 		{
-			Console.WriteLine("VERSION:\t0.02");
+			Console.WriteLine("VERSION:\t0.03");
 			Console.WriteLine("Entwickler:\tNiko2405");
 		}
 	}

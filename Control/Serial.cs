@@ -1,10 +1,5 @@
 ﻿using Serilog;
-using System;
-using System.Collections.Generic;
 using System.IO.Ports;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Control
 {
@@ -20,7 +15,7 @@ namespace Control
 			string send = command;
 			string recv = "NONE";
 
-			SerialPort serialPort = new SerialPort(Server.COM_Port, Server.COM_Baud, Parity.None, 8, StopBits.One);
+			SerialPort serialPort = new SerialPort(Control.COM_Port, Control.COM_Baud, Parity.None, 8, StopBits.One);
 			serialPort.WriteTimeout = 250;
 			serialPort.ReadTimeout = 250;
 
@@ -32,7 +27,7 @@ namespace Control
 			}
 			catch (IOException)
 			{
-				Log.Error("Zeitüberschreitung am " + Server.COM_Port);
+				Log.Error("Zeitüberschreitung am " + Control.COM_Port);
 				Thread.Sleep(5000);
 			}
 			if (serialPort.IsOpen)
