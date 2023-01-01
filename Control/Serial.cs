@@ -22,7 +22,11 @@ namespace Control
 			try
 			{
 				serialPort.Open();
+
+				// write data without \n and \r
 				serialPort.Write(send);
+
+				// read data and remove \n and \r
 				recv = serialPort.ReadLine().Replace("\n", "").Replace("\r", "");
 			}
 			catch (IOException)
@@ -30,6 +34,7 @@ namespace Control
 				Log.Error("Zeitüberschreitung am " + Control.COM_Port);
 				Thread.Sleep(5000);
 			}
+			// close serial port
 			if (serialPort.IsOpen)
 			{
 				serialPort.Close();

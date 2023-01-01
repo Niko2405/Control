@@ -123,6 +123,23 @@ namespace Control
 						}
 					}
 				}
+				else if (input_list[a] == "help")
+				{
+					if (input_list.Length >= 2)
+					{
+						for (int b = 0; b < input_list.Length; b++)
+						{
+							if (input_list[b] == "mm" || input_list[b] == "mastermodule")
+							{
+								return "\thelp for mm or Mastermodule\nmm send\t\tSend command over the given serial port to an arduino or other devices";
+                            }
+						}
+					}
+					else if (input_list.Length == 1)
+					{
+						return "\tglobal help\nstart\t\tStart programs or tests\nset\t\tSet variables";
+					}
+				}
 				// mm = MasterModule
 				else if (input_list[a] == "mm" || input_list[a] == "mastermodule")
 				{

@@ -4,6 +4,11 @@ namespace Control
 {
 	internal class Utils
 	{
+		/// <summary>
+		/// Create file in directory
+		/// </summary>
+		/// <param name="path"></param>
+		/// <param name="filename"></param>
 		public static void CreateFile(string path, string filename)
 		{
 			if (File.Exists(path + filename))
@@ -16,7 +21,11 @@ namespace Control
 				Log.Information(path + filename + " File created");
 			}
 		}
-
+		/// <summary>
+		/// Delete file in diractory
+		/// </summary>
+		/// <param name="path"></param>
+		/// <param name="filename"></param>
 		public static void DeleteFile(string path, string filename)
 		{
 			if (!File.Exists(path + filename))
@@ -29,7 +38,10 @@ namespace Control
 				Log.Information(path + filename + " deleted");
 			}
 		}
-
+		/// <summary>
+		/// Create directory
+		/// </summary>
+		/// <param name="path"></param>
 		public static void CreateDirectory(string path)
 		{
 			if (Directory.Exists(path))
@@ -43,6 +55,10 @@ namespace Control
 			}
 		}
 
+		/// <summary>
+		/// Delete given directory
+		/// </summary>
+		/// <param name="path"></param>
 		public static void DeleteDirectory(string path)
 		{
 			if (!Directory.Exists(path))
